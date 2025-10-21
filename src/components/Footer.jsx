@@ -7,30 +7,7 @@
           All rights reserved.
         </p>
 
-        <div className="flex justify-center gap-6 mt-4">
-          <a
-            href="https://github.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-white transition duration-300"
-          >
-            GitHub
-          </a>
-          <a
-            href="https://linkedin.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-white transition duration-300"
-          >
-            LinkedIn
-          </a>
-          <a
-            href="mailto:yourname@example.com"
-            className="hover:text-white transition duration-300"
-          >
-            Email
-          </a>
-        </div>
+    
       </div>
     </footer>
   );

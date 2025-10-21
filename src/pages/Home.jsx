@@ -6,7 +6,7 @@ const Home = () => {
     <>
          <section
         id="home"
-        className="min-h-[75vh] flex flex-col md:flex-row justify-between items-center 
+        className="min-h-screen flex flex-col md:flex-row justify-between items-center 
         text-center md:text-left bg-gray-100 px-10 pt-24 relative"
       >
         {/* Left Side: Text */}
@@ -79,40 +79,6 @@ const Home = () => {
           <span className="text-blue-400 font-semibold">Limon</span>. All rights reserved.
         </p>
 
-        <div className="flex justify-center gap-6 mt-3 text-sm">
-            <a
-            href="https://github.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-white transition duration-300"
-          >
-            Facebook
-          </a>
-          <a
-            href="https://github.com/limon-available"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-white transition duration-300"
-          >
-            GitHub
-          </a>
-          <a
-            href="https://www.linkedin.com/in/nazmul-hossen-limon-limon-24b656205/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-white transition duration-300"
-          >
-            LinkedIn
-          </a>
-          <a
-            
-            href="nazmulhossenlimon56@gmail.com"
-            className="hover:text-white transition duration-300"
-          >
-            Email
-          </a>
-          
-        </div>
       </footer>
     </>
   );
