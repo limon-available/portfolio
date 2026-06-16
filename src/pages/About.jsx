@@ -1,55 +1,71 @@
- const About = () => {
+import { FaGraduationCap, FaCode } from "react-icons/fa";
+import PageWrapper from "../components/ui/PageWrapper.jsx";
+import Section, { SectionHeading } from "../components/ui/Section.jsx";
+import Card from "../components/ui/Card.jsx";
+import SkillBadge from "../components/ui/SkillBadge.jsx";
+import { profile } from "../data/profile.js";
+import { skillGroups } from "../data/skills.js";
+
+const About = () => {
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center 
-      bg-gradient-to-b from-gray-100 to-gray-200 text-center px-6 py-16 relative text-gray-800">
-      
-      {/* Decorative background blur */}
-      <div className="absolute w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply 
-        filter blur-3xl opacity-30 top-0 left-1/3 -z-10"></div>
+    <PageWrapper
+      title="About — Md. Limon"
+      description="About Md. Limon — a Full Stack MERN Developer with skills across React, Node.js, MongoDB, automation, and AI integration."
+    >
+      {/* ===== About Me ===== */}
+      <Section id="about">
+        <SectionHeading eyebrow="Get to know me" title="About Me" />
+        <Card className="mx-auto max-w-3xl p-8 text-center">
+          <p className="text-lg leading-relaxed text-surface-700 dark:text-surface-300">
+            {profile.about}
+          </p>
+        </Card>
+      </Section>
 
-      {/* --- About Header --- */}
-      <h2 className="text-4xl font-extrabold text-gray-900 mb-4">
-        About <span className="text-blue-700">Me</span>
-      </h2>
-
-      <p className="max-w-2xl text-gray-700 leading-relaxed mb-12">
-        I’m a passionate <span className="text-blue-700 font-semibold">Full Stack Developer</span> 
-        who enjoys transforming ideas into elegant, interactive web experiences.  
-        Skilled in <span className="text-indigo-700 font-semibold">React</span> and 
-        <span className="text-indigo-700 font-semibold"> TailwindCSS</span>, I love blending creativity with functionality.
-      </p>
-
-      {/* --- Skills & Education Cards --- */}
-      <div className="grid md:grid-cols-2 gap-10 max-w-4xl w-full">
-        {/* Skills */}
-        <div className="bg-white shadow-lg rounded-xl p-8 hover:-translate-y-1 
-          transition border border-gray-300">
-          <h3 className="text-xl font-semibold text-blue-700 mb-4 flex items-center justify-center gap-2">
-            💡 Skills
-          </h3>
-          <ul className="text-gray-700 space-y-2 text-left">
-            <li>⚡ HTML5, CSS3, JavaScript (ES6+)</li>
-            <li>⚛️ React.js, TailwindCSS</li>
-            <li>🛠️ Node.js, Express.js</li>
-            <li>📦 Git, GitHub, REST APIs</li>
-            <li>🗄️ MySQL, MongoDB</li>
-          </ul>
+      {/* ===== Skills ===== */}
+      <Section id="skills" className="bg-surface-100/60 dark:bg-surface-900/40">
+        <SectionHeading
+          eyebrow="My Toolbox"
+          title="Skills & Technologies"
+          subtitle="Technologies I use to design, build, and ship reliable software."
+        />
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {skillGroups.map((group) => (
+            <Card key={group.label} className="p-6">
+              <h3 className="mb-4 flex items-center gap-2 font-bold text-brand-600 dark:text-brand-400">
+                <FaCode aria-hidden="true" /> {group.label}
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {group.items.map((item) => (
+                  <SkillBadge key={item}>{item}</SkillBadge>
+                ))}
+              </div>
+            </Card>
+          ))}
         </div>
+      </Section>
 
-        {/* Education */}
-        <div className="bg-white shadow-lg rounded-xl p-8 hover:-translate-y-1 
-          transition border border-gray-300">
-          <h3 className="text-xl font-semibold text-indigo-700 mb-4 flex items-center justify-center gap-2">
-            🎓 Education
-          </h3>
-          <ul className="text-gray-700 space-y-2 text-left">
-            <li>🎓 Bachelor’s in Computer Science & Engineering</li>
-            <li>📚 Certifications in Web Development</li>
-            <li>🎨 Advanced training in React & UI/UX Design</li>
-          </ul>
-        </div>
-      </div>
-    </section>
+      {/* ===== Education ===== */}
+      <Section id="education">
+        <SectionHeading eyebrow="Background" title="Education" />
+        <Card className="mx-auto flex max-w-2xl items-start gap-4 p-8">
+          <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600 dark:bg-surface-800 dark:text-brand-300">
+            <FaGraduationCap className="h-6 w-6" aria-hidden="true" />
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-surface-900 dark:text-white">
+              {profile.education.degree}
+            </h3>
+            <p className="mt-1 font-medium text-brand-600 dark:text-brand-400">
+              {profile.education.school}
+            </p>
+            <p className="mt-2 text-surface-600 dark:text-surface-300">
+              {profile.education.detail}
+            </p>
+          </div>
+        </Card>
+      </Section>
+    </PageWrapper>
   );
 };
 

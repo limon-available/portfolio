@@ -1,81 +1,160 @@
- import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { FaEnvelope, FaMapMarkerAlt, FaCheckCircle } from "react-icons/fa";
+import PageWrapper from "../components/ui/PageWrapper.jsx";
+import Section from "../components/ui/Section.jsx";
+import Card from "../components/ui/Card.jsx";
+import Field from "../components/ui/Field.jsx";
+import Button from "../components/ui/Button.jsx";
+import { submitContact } from "../api/contact.js";
+import { profile } from "../data/profile.js";
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const validate = ({ name, email, message }) => {
+  const errors = {};
+  if (name.trim().length < 2) errors.name = "Name must be at least 2 characters.";
+  if (!EMAIL_RE.test(email.trim())) errors.email = "Enter a valid email address.";
+  if (message.trim().length < 10) errors.message = "Message must be at least 10 characters.";
+  return errors;
+};
 
 const Contact = () => {
+  const [values, setValues] = useState({ name: "", email: "", message: "", website: "" });
+  const [errors, setErrors] = useState({});
+  const [status, setStatus] = useState("idle"); // idle | submitting | success | error
+  const [formError, setFormError] = useState(null);
+
+  const update = (field) => (e) => setValues((v) => ({ ...v, [field]: e.target.value }));
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setFormError(null);
+    const found = validate(values);
+    setErrors(found);
+    if (Object.keys(found).length) return;
+
+    setStatus("submitting");
+    try {
+      await submitContact({
+        name: values.name.trim(),
+        email: values.email.trim(),
+        message: values.message.trim(),
+        website: values.website, // honeypot
+      });
+      setStatus("success");
+      setValues({ name: "", email: "", message: "", website: "" });
+    } catch (err) {
+      setStatus("error");
+      if (err.fields) setErrors(err.fields);
+      setFormError(
+        err.status === 429
+          ? "You’ve sent a few messages already — please wait a little and try again."
+          : err.message || "Something went wrong. Please try again.",
+      );
+    }
+  };
+
   return (
-    <section className="flex flex-col md:flex-row items-center justify-center bg-gradient-to-br from-[#eef3ff] via-[#e2e8f0] to-[#f8fafc] px-8 py-20 md:py-28 gap-14">
-      
-      {/* Left Section - Text */}
-      <div className="md:w-1/2 text-center md:text-left space-y-6">
-        <motion.h2
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-cyan-600"
-        >
-          Contact Me
-        </motion.h2>
-
-        <p className="text-gray-700 text-lg font-semibold leading-relaxed max-w-md">
-          I’d love to hear from you! <br />
-          Let’s create something amazing together 💫
-        </p>
-
-        <div className="mt-6 space-y-2 text-gray-600 font-medium">
-          <p>📧 limon@example.com</p>
-          <p>📞 +880 1XXX-XXXXXX</p>
-          <p>🌍 Dhaka, Bangladesh</p>
-        </div>
-      </div>
-
-      {/* Right Section - Contact Form */}
-      <motion.form
-        initial={{ opacity: 0, x: 40 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.3, duration: 0.8 }}
-        className="md:w-1/2 w-full max-w-md bg-gradient-to-br from-[#1e293b] to-[#334155] border border-gray-700/40 text-white rounded-2xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.25)]"
-      >
-        <div className="space-y-5">
-          <div>
-            <label className="block text-gray-200 font-medium mb-1">Name</label>
-            <input
-              type="text"
-              className="w-full px-4 py-2.5 rounded-lg border border-gray-500 bg-[#0f172a] text-white placeholder-gray-400 focus:ring-2 focus:ring-cyan-500 outline-none"
-              placeholder="Your Name"
-            />
-          </div>
-
-          <div>
-            <label className="block text-gray-200 font-medium mb-1">Email</label>
-            <input
-              type="email"
-              className="w-full px-4 py-2.5 rounded-lg border border-gray-500 bg-[#0f172a] text-white placeholder-gray-400 focus:ring-2 focus:ring-cyan-500 outline-none"
-              placeholder="you@example.com"
-            />
-          </div>
-
-          <div>
-            <label className="block text-gray-200 font-medium mb-1">Message</label>
-            <textarea
-              rows="3"
-              className="w-full px-4 py-2.5 rounded-lg border border-gray-500 bg-[#0f172a] text-white placeholder-gray-400 focus:ring-2 focus:ring-cyan-500 outline-none resize-none"
-              placeholder="Write your message..."
-            ></textarea>
-          </div>
-
-          <motion.button
-            whileHover={{
-              scale: 1.05,
-              boxShadow: "0 0 25px rgba(6,182,212,0.6)",
-            }}
-            whileTap={{ scale: 0.97 }}
-            type="submit"
-            className="w-full py-2.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold text-lg transition-all duration-300"
+    <PageWrapper
+      title="Contact — Md. Limon"
+      description="Get in touch with Md. Limon for freelance work, collaboration, or full-time opportunities."
+    >
+      <Section id="contact">
+        <div className="grid items-center gap-12 md:grid-cols-2">
+          {/* Left: intro + details */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
           >
-            Send Message 💌
-          </motion.button>
+            <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">
+              Let’s connect
+            </p>
+            <h1 className="text-3xl font-extrabold tracking-tight text-surface-900 dark:text-white sm:text-4xl">
+              Contact Me
+            </h1>
+            <p className="mt-4 max-w-md text-surface-600 dark:text-surface-300">
+              I’d love to hear about your project. Send a message and I’ll get back to you as soon
+              as I can.
+            </p>
+            <ul className="mt-6 space-y-3 text-surface-700 dark:text-surface-300">
+              <li className="flex items-center gap-3">
+                <FaEnvelope className="text-brand-600 dark:text-brand-400" aria-hidden="true" />
+                <a href={`mailto:${profile.email}`} className="hover:underline">{profile.email}</a>
+              </li>
+              <li className="flex items-center gap-3">
+                <FaMapMarkerAlt className="text-brand-600 dark:text-brand-400" aria-hidden="true" />
+                {profile.location}
+              </li>
+            </ul>
+          </motion.div>
+
+          {/* Right: form */}
+          <Card className="p-8">
+            {status === "success" ? (
+              <div className="flex flex-col items-center py-8 text-center">
+                <FaCheckCircle className="mb-4 text-5xl text-green-500" aria-hidden="true" />
+                <h2 className="text-xl font-bold text-surface-900 dark:text-white">Message sent!</h2>
+                <p className="mt-2 text-surface-600 dark:text-surface-300">
+                  Thanks for reaching out — I’ll reply soon.
+                </p>
+                <Button variant="outline" className="mt-6" onClick={() => setStatus("idle")}>
+                  Send another
+                </Button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+                {/* Honeypot */}
+                <input
+                  type="text"
+                  name="website"
+                  value={values.website}
+                  onChange={update("website")}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  className="hidden"
+                  aria-hidden="true"
+                />
+                <Field
+                  label="Name"
+                  value={values.name}
+                  onChange={update("name")}
+                  placeholder="Your name"
+                  error={errors.name}
+                  required
+                />
+                <Field
+                  label="Email"
+                  type="email"
+                  value={values.email}
+                  onChange={update("email")}
+                  placeholder="you@example.com"
+                  error={errors.email}
+                  required
+                />
+                <Field
+                  label="Message"
+                  as="textarea"
+                  rows={4}
+                  value={values.message}
+                  onChange={update("message")}
+                  placeholder="Tell me about your project…"
+                  error={errors.message}
+                  required
+                />
+                {formError && (
+                  <p className="text-sm text-red-600 dark:text-red-400" role="alert">{formError}</p>
+                )}
+                <Button type="submit" size="lg" className="w-full" loading={status === "submitting"}>
+                  {status === "submitting" ? "Sending…" : "Send Message"}
+                </Button>
+              </form>
+            )}
+          </Card>
         </div>
-      </motion.form>
-    </section>
+      </Section>
+    </PageWrapper>
   );
 };
 
