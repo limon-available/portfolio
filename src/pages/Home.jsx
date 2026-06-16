@@ -20,7 +20,10 @@ const Home = () => {
       {/* ===== Hero ===== */}
       <section className="relative overflow-hidden">
         {/* Decorative blobs */}
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10"
+        >
           <div className="absolute -top-20 left-1/4 h-72 w-72 rounded-full bg-brand-300/30 blur-3xl dark:bg-brand-700/20 animate-blob" />
           <div className="absolute bottom-0 right-1/4 h-80 w-80 rounded-full bg-accent-400/20 blur-3xl animate-blob" />
         </div>
@@ -31,7 +34,10 @@ const Home = () => {
               {profile.location}
             </p>
             <h1 className="text-4xl font-extrabold tracking-tight text-surface-900 dark:text-white sm:text-5xl">
-              Hi, I’m <span className="bg-gradient-to-r from-brand-600 to-accent-500 bg-clip-text text-transparent">{profile.shortName}</span>
+              Hi, I’m{" "}
+              <span className="bg-gradient-to-r from-brand-600 to-accent-500 bg-clip-text text-transparent">
+                {profile.shortName}
+              </span>
             </h1>
             <TypeAnimation
               sequence={profile.titles.flatMap((t) => [t, 1500])}
@@ -56,7 +62,7 @@ const Home = () => {
           <div className="flex flex-1 justify-center md:justify-end">
             <div className="animate-float">
               <img
-                src={profileImg}
+                src="https://res.cloudinary.com/dnjrmakcu/image/upload/v1773588391/rwj02lwiio9ew6arpnlx.jpg"
                 alt="Portrait of Md. Limon"
                 width="288"
                 height="288"
@@ -69,7 +75,10 @@ const Home = () => {
       </section>
 
       {/* ===== Services ===== */}
-      <Section id="services" className="bg-surface-100/60 dark:bg-surface-900/40">
+      <Section
+        id="services"
+        className="bg-surface-100/60 dark:bg-surface-900/40"
+      >
         <SectionHeading
           eyebrow="What I Do"
           title="Services"
@@ -77,7 +86,12 @@ const Home = () => {
         />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((s) => (
-            <ServiceCard key={s.title} icon={s.icon} title={s.title} desc={s.desc} />
+            <ServiceCard
+              key={s.title}
+              icon={s.icon}
+              title={s.title}
+              desc={s.desc}
+            />
           ))}
         </div>
       </Section>
@@ -92,8 +106,12 @@ const Home = () => {
         <div className="grid gap-6 sm:grid-cols-2">
           {projects.map((p) => (
             <Card key={p.slug} className={`bg-gradient-to-br ${p.accent} p-6`}>
-              <h3 className="text-xl font-bold text-surface-900 dark:text-white">{p.title}</h3>
-              <p className="mt-2 text-sm text-surface-700 dark:text-surface-300">{p.desc}</p>
+              <h3 className="text-xl font-bold text-surface-900 dark:text-white">
+                {p.title}
+              </h3>
+              <p className="mt-2 text-sm text-surface-700 dark:text-surface-300">
+                {p.desc}
+              </p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {p.tech.slice(0, 4).map((t) => (
                   <SkillBadge key={t}>{t}</SkillBadge>
@@ -120,10 +138,12 @@ const Home = () => {
       {/* ===== CTA ===== */}
       <Section>
         <Card className="overflow-hidden bg-gradient-to-r from-brand-600 to-accent-600 p-10 text-center text-white">
-          <h2 className="text-2xl font-extrabold sm:text-3xl">Have a project in mind?</h2>
+          <h2 className="text-2xl font-extrabold sm:text-3xl">
+            Have a project in mind?
+          </h2>
           <p className="mx-auto mt-3 max-w-xl text-white/90">
-            Let’s build something scalable and beautiful together. I’m available for freelance
-            and full-time opportunities.
+            Let’s build something scalable and beautiful together. I’m available
+            for freelance and full-time opportunities.
           </p>
           <div className="mt-6 flex justify-center">
             <Button to="/contact" variant="secondary" size="lg">
